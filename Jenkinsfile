@@ -4,13 +4,20 @@ pipeline {
       yamlFile 'KubernetesPod.yaml'
     }
   }
+
+  environment {
+    FAMILY = 'linux'
+    ARCHITECTURE = 'amd64'
+  }
+
+
   stages {
 
     stage('prepare') {
       steps {
         container('tools') {
           dir('project') {
-            echo 'preparing the application'
+            echo "preparing the application (FAMILY=${env.FAMILY}, ARCH=${env.ARCHITECTURE})"
             checkout([
               $class: 'GitSCM', 
               branches: [[name: '*/main']], 
